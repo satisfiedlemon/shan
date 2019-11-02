@@ -1,53 +1,17 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Formik, Form, useField } from 'formik';
+import * as Yup from "yup";
 import config from '../config';
 
 import UserGames from './search/UserGames';
 import NewUser from './create/NewUser';
+import InputTableCell from './table/InputTableCell';
 
 function Users({}) {
 
   const server = config.server.url;
   const [ users, setUsers ] = useState([]);
-
-  const MyTextInput = ({ label, ...props }) => {
-    // useField() returns [formik.getFieldProps(), formik.getFieldMeta()]
-    // which we can spread on <input> and alse replace ErrorMessage entirely.
-    const [field, meta] = useField(props);
-    return (
-      <>
-        <label htmlFor={props.id || props.name}>{label}</label>
-        <input className="text-input" {...field} {...props} />
-        {meta.touched && meta.error ? (
-          <div className="error">{meta.error}</div>
-        ) : null}
-      </>
-    );
-  };
-
-  // Styled components ....
-  const StyledSelect = styled.select`
-    color: var(--blue);
-  `;
-
-  const StyledErrorMessage = styled.div`
-    font-size: 12px;
-    color: var(--red-600);
-    width: 400px;
-    margin-top: 0.25rem;
-    &:before {
-      content: "❌ ";
-      font-size: 10px;
-    }
-    @media (prefers-color-scheme: dark) {
-      color: var(--red-300);
-    }
-  `;
-
-  const StyledLabel = styled.label`
-    margin-top: 1rem;
-  `;
 
   useEffect(() => {
     axios.get(`${server}/user`).then(data => {
@@ -78,19 +42,71 @@ function Users({}) {
         <tbody>
           {users.map((user, index) => {
             return (
-              <tr key={index}>
-                <td data-col="ID">{user.id}</td>
-                <td data-col="User Name">{user.user_name}</td>
-                <td data-col="Full Name">{user.full_name}</td>
-                <td data-col="Balance">{user.balance}</td>
-                <td data-col="Total Deposit">{user.total_deposit}</td>
-                <td data-col="Status">{user.status}</td>
-                <td data-col="User Type">{user.user_type}</td>
-                <td data-col="Phone">{user.phone}</td>
-                <td data-col="Last Login">{user.last_login}</td>
-                <td data-col="Updated At">{user.updated_at}</td>
-                <td data-col="Created At">{user.created_at}</td>
-              </tr>
+              <Formik
+                initialValues={{
+                  userName: user.user_name,
+                  fullName: user.full_name,
+                  balance: user.balance,
+                  totalDeposit: user.total_deposit,
+                  status: user.status,
+                  phone: user.phone
+                }}
+                validationSchema={Yup.object({
+                  userName: Yup.string()
+                    .min(3, "Must be 3 characters or less")
+                    .max(50, "Too long")
+                    .required("Required"),
+                  fullName: Yup.string()
+                    .min(3, "Must be 3 characters or less")
+                    .max(50, "Too long")
+                    .required("Required"),
+                  // email: Yup.string()
+                  //   .email("Invalid email addresss`")
+                  //   .required("Required"),
+                  status: Yup.string()
+                    // @see http://bit.ly/yup-mixed-oneOf
+                    .oneOf(
+                      ["active", "inactive"],
+                      "Invalid Job Type"
+                    )
+                    .required("Required")
+                })}
+                onSubmit={(values, { setSubmitting }) => {
+                  
+                  try {
+                    axios.put(`${server}/user/${user.id}`, {
+                      user_name: userName,
+                      full_name: fullName,
+                      balance: balance,
+                      total_deposit: totalDeposit,
+                      status: status,
+                      phone: phone,
+                      updated_at: new Date()
+                    });
+                  } catch (err) {
+                    console.log(err)
+                  }
+
+                  setTimeout(() => {
+                    alert("saved")
+                  }, 400);
+                }}
+              >
+                <tr key={index}>
+                  <td data-col="ID">{user.id}</td>
+                  <td data-col="User Name">{user.user_name}</td>
+                  <td data-col="Full Name">{user.full_name}</td>
+                  <td data-col="Balance">{user.balance}</td>
+                  <td data-col="Total Deposit">{user.total_deposit}</td>
+                  <td data-col="Status">{user.status}</td>
+                  <td data-col="User Type">{user.user_type}</td>
+                  <td data-col="Phone">{user.phone}</td>
+                  <td data-col="Last Login">{user.last_login}</td>
+                  <td data-col="Updated At">{user.updated_at}</td>
+                  <td data-col="Created At">{user.created_at}</td>
+                </tr>
+
+              </Formik>
             );
           })}
         </tbody>
