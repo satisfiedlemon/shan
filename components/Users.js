@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Formik, useField } from 'formik';
+import { Formik } from 'formik';
 import * as Yup from "yup";
 import config from '../config';
 
 import UserGames from './search/UserGames';
 import NewUser from './create/NewUser';
 import InputTableCell from './table/InputTableCell';
+import SelectTableCell from './table/SelectTableCell';
 
 function Users({}) {
 
@@ -59,17 +60,14 @@ function Users({}) {
                     .required("Required"),
                 })}
                 onSubmit={(values, { setSubmitting }) => {
-
-                  // console.log(userName)
-                  
                   try {
                     axios.put(`${server}/user/${user.id}`, {
                       user_name: values.userName,
-                      // full_name: fullName,
-                      // balance: balance,
-                      // total_deposit: totalDeposit,
-                      // status: status,
-                      // phone: phone,
+                      full_name: values.fullName,
+                      balance: values.balance,
+                      total_deposit: values.totalDeposit,
+                      status: values.status,
+                      phone: values.phone,
                       updated_at: new Date()
                     });
                   } catch (err) {
@@ -84,12 +82,14 @@ function Users({}) {
                 <tr>
                   <td data-col="ID">{user.id}</td>
                   <td data-col="User Name">
-                    <InputTableCell name="userName" value={user.user_name} />
+                    <InputTableCell data="userName" value={user.user_name} />
                   </td>
                   <td data-col="Full Name">{user.full_name}</td>
                   <td data-col="Balance">{user.balance}</td>
                   <td data-col="Total Deposit">{user.total_deposit}</td>
-                  <td data-col="Status">{user.status}</td>
+                  <td data-col="Status">
+                    <SelectTableCell data="status" value={user.status} options={['active', 'inactive']} />
+                  </td>
                   <td data-col="User Type">{user.user_type}</td>
                   <td data-col="Phone">{user.phone}</td>
                   <td data-col="Last Login">{user.last_login}</td>

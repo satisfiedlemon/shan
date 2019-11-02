@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Formik, Form, useField } from 'formik';
+import { Form, useField } from 'formik';
 import styled from "@emotion/styled";
 
-function InputTableCell({ name, value }) {
+function InputTableCell({ data, value }) {
 
   const [ toggle, setToggle ] = useState(false);
 
@@ -27,7 +27,7 @@ function InputTableCell({ name, value }) {
           ?
             <Form>
               <MyTextInput
-                name={name}
+                name={data}
                 type="text"
                 placeholder={value}
               />
