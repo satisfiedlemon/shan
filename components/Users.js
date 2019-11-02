@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
-import { Formik, Form, useField } from 'formik';
+import { Formik, useField } from 'formik';
 import * as Yup from "yup";
 import config from '../config';
 
@@ -43,6 +43,7 @@ function Users({}) {
           {users.map((user, index) => {
             return (
               <Formik
+                key={index}
                 initialValues={{
                   userName: user.user_name,
                   fullName: user.full_name,
@@ -56,45 +57,35 @@ function Users({}) {
                     .min(3, "Must be 3 characters or less")
                     .max(50, "Too long")
                     .required("Required"),
-                  fullName: Yup.string()
-                    .min(3, "Must be 3 characters or less")
-                    .max(50, "Too long")
-                    .required("Required"),
-                  // email: Yup.string()
-                  //   .email("Invalid email addresss`")
-                  //   .required("Required"),
-                  status: Yup.string()
-                    // @see http://bit.ly/yup-mixed-oneOf
-                    .oneOf(
-                      ["active", "inactive"],
-                      "Invalid Job Type"
-                    )
-                    .required("Required")
                 })}
                 onSubmit={(values, { setSubmitting }) => {
+
+                  // console.log(userName)
                   
                   try {
                     axios.put(`${server}/user/${user.id}`, {
-                      user_name: userName,
-                      full_name: fullName,
-                      balance: balance,
-                      total_deposit: totalDeposit,
-                      status: status,
-                      phone: phone,
+                      user_name: values.userName,
+                      // full_name: fullName,
+                      // balance: balance,
+                      // total_deposit: totalDeposit,
+                      // status: status,
+                      // phone: phone,
                       updated_at: new Date()
                     });
                   } catch (err) {
                     console.log(err)
                   }
 
-                  setTimeout(() => {
-                    alert("saved")
-                  }, 400);
+                  // setTimeout(() => {
+                  //   alert("saved")
+                  // }, 400);
                 }}
               >
-                <tr key={index}>
+                <tr>
                   <td data-col="ID">{user.id}</td>
-                  <td data-col="User Name">{user.user_name}</td>
+                  <td data-col="User Name">
+                    <InputTableCell name="userName" value={user.user_name} />
+                  </td>
                   <td data-col="Full Name">{user.full_name}</td>
                   <td data-col="Balance">{user.balance}</td>
                   <td data-col="Total Deposit">{user.total_deposit}</td>
