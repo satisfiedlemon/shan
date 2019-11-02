@@ -8,7 +8,7 @@ function SelectTableCell({ data, value, options }) {
 
   // Styled components ....
   const StyledSelect = styled.select`
-    color: var(--blue);
+    color: var(--red);
   `;
 
   const StyledErrorMessage = styled.div`
@@ -49,7 +49,6 @@ function SelectTableCell({ data, value, options }) {
                 <option value="">Select</option>
                 {
                   options.map((o, i) => {
-                    console.log(o)
                     return (
                       <React.Fragment key={i}>
                         <option value={o}>{o}</option>
