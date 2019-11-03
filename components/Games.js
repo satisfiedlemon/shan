@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
+import { Formik } from 'formik';
+import * as Yup from "yup";
 import config from '../config';
 
 import GameUsers from './search/GameUsers';
 import NewGame from './create/NewGame';
+import InputTableCell from './.table/InputTableCell';
 
 function Games({}) {
 
@@ -36,7 +39,9 @@ function Games({}) {
           {games.map((game, index) => {
             return (
               <tr key={index}>
-                <td data-col="ID">{game.id}</td>
+                <td data-col="ID">
+                  
+                </td>
                 <td data-col="Name">{game.name}</td>
                 <td data-col="Min Bet">{game.minimum_bet}</td>
                 <td data-col="Max Bet">{game.maximum_bet}</td>

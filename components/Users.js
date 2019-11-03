@@ -59,6 +59,30 @@ function Users({}) {
                     .min(3, "Must be 3 characters or less")
                     .max(50, "Too long")
                     .required("Required"),
+                  fullName: Yup.string()
+                    .min(3, "Must be 3 characters or less")
+                    .max(50, "Too long")
+                    .required("Required"),
+                  balance: Yup.number()
+                    .required("Required"),
+                  totalDeposit: Yup.number()  
+                    .required("Required"),
+                  status: Yup.string()
+                    .oneOf(
+                      ["active", "inactive",],
+                      "Invalid Status Type"
+                    )
+                    .required("Required"),
+                  userType: Yup.string()
+                    .oneOf(
+                      ["player", "admin",],
+                      "Invalid User Type"
+                    )
+                    .required("Required"),
+                  phone: Yup.string()
+                    .min(3, "Must be 3 characters or less")
+                    .max(20, "Too long")
+                    .required("Required")
                 })}
                 onSubmit={(values, { setSubmitting }) => {
                   try {
