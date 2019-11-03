@@ -20,6 +20,12 @@ function Users({}) {
     }).catch(err => console.log(err));
   }, []);
 
+  useEffect(() => {
+    axios.get(`${server}/user`).then(data => {
+      setUsers(data.data);
+    }).catch(err => console.log(err));
+  }, [users])
+
   return (
     <div className="main-content">
       <h2>Users</h2>
@@ -141,7 +147,7 @@ function Users({}) {
 
       <UserGames />
 
-      <NewUser />
+      <NewUser setter={setUsers} />
 
     </div>
   );

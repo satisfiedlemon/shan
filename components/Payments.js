@@ -19,6 +19,12 @@ function Payments({}) {
     }).catch(err => console.log(err));
   }, []);
 
+  useEffect(() => {
+    axios.get(`${server}/payment`).then(data => {
+      setPayments(data.data);
+    }).catch(err => console.log(err));
+  }, [payments]);
+
   return (
     <div className="main-content">
       <h2>Payments</h2>
@@ -98,7 +104,7 @@ function Payments({}) {
 
       <UserPayments />
 
-      <NewPayment />
+      <NewPayment setter={setPayments} />
       
     </div>
   );

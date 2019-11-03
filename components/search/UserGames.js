@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import config from '../../config';
 
-function UserGames({}) {
+function UserGames({ setter }) {
 
   const server = config.server.url;
   const [ userGames, setUserGames ] = useState([]);
@@ -13,6 +13,7 @@ function UserGames({}) {
 
     axios.get(`${server}/user/${userId}/games`).then(data => {
       setUserGames(data.data);
+      setter(data.data);
     }).catch(err => console.log(err));
   }
 

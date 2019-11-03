@@ -19,6 +19,12 @@ function Games({}) {
     }).catch(err => console.log(err));
   }, []);
 
+  useEffect(() => {
+    axios.get(`${server}/game`).then(data => {
+      setGames(data.data);
+    }).catch(err => console.log(err));
+  }, [games]);
+
   return (
     <div className="main-content">
       <h2>Games</h2>
@@ -97,7 +103,7 @@ function Games({}) {
 
       <GameUsers />
 
-      <NewGame />
+      <NewGame setter={setGames} />
     </div>
   );
 }

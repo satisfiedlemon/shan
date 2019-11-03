@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import config from '../../config';
 
-function UserPayments({}) {
+function UserPayments({ setter }) {
 
   const server = config.server.url;
   const [ results, setResults ] = useState([]);
@@ -13,6 +13,7 @@ function UserPayments({}) {
     
     axios.get(`${server}/user/${userId}/payments`).then(data => {
       setResults(data.data);
+      setter(data.data);
     }).catch(err => console.log(err));
   }
 
