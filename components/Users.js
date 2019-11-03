@@ -51,6 +51,7 @@ function Users({}) {
                   balance: user.balance,
                   totalDeposit: user.total_deposit,
                   status: user.status,
+                  userType: user.user_type,
                   phone: user.phone
                 }}
                 validationSchema={Yup.object({
@@ -67,6 +68,7 @@ function Users({}) {
                       balance: values.balance,
                       total_deposit: values.totalDeposit,
                       status: values.status,
+                      user_type: values.userType,
                       phone: values.phone,
                       updated_at: new Date()
                     });
@@ -82,16 +84,26 @@ function Users({}) {
                 <tr>
                   <td data-col="ID">{user.id}</td>
                   <td data-col="User Name">
-                    <InputTableCell data="userName" value={user.user_name} />
+                    <InputTableCell data="userName" value={user.user_name} type="text" />
                   </td>
-                  <td data-col="Full Name">{user.full_name}</td>
-                  <td data-col="Balance">{user.balance}</td>
-                  <td data-col="Total Deposit">{user.total_deposit}</td>
+                  <td data-col="Full Name">
+                    <InputTableCell data="fullName" value={user.full_name} type="text" />
+                  </td>
+                  <td data-col="Balance">
+                    <InputTableCell data="balance" value={user.balance} type="number" />
+                  </td>
+                  <td data-col="Total Deposit">
+                    <InputTableCell data="totalDeposit" value={user.total_deposit} type="number" />
+                  </td>
                   <td data-col="Status">
                     <SelectTableCell data="status" value={user.status} options={['active', 'inactive']} />
                   </td>
-                  <td data-col="User Type">{user.user_type}</td>
-                  <td data-col="Phone">{user.phone}</td>
+                  <td data-col="User Type">
+                    <SelectTableCell data="userType" value={user.user_type} options={['player', 'admin']} />
+                  </td>
+                  <td data-col="Phone">
+                    <InputTableCell data="phone" value={user.phone} type="text" />
+                  </td>
                   <td data-col="Last Login">{user.last_login}</td>
                   <td data-col="Updated At">{user.updated_at}</td>
                   <td data-col="Created At">{user.created_at}</td>
