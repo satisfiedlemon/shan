@@ -32,7 +32,7 @@ function InputTableCell({ data, value, type }) {
                 placeholder={value}
               />
               <button type="submit">Submit</button>
-              <button>Cancel</button>
+              <button type="reset" onClick={() => {console.log("asd"); setToggle(false)}}>Cancel</button>
             </Form>
           :
             <p>{value}</p>

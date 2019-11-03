@@ -6,7 +6,7 @@ import config from '../config';
 
 import GameUsers from './search/GameUsers';
 import NewGame from './create/NewGame';
-import InputTableCell from './.table/InputTableCell';
+import InputTableCell from './table/InputTableCell';
 
 function Games({}) {
 
@@ -60,7 +60,7 @@ function Games({}) {
                 })}
                 onSubmit={(values, { setSubmitting }) => {
                   try {
-                    axios.put(`${server}/user/${user.id}`, {
+                    axios.put(`${server}/game/${game.id}`, {
                       name: values.name,
                       minimum_bet: values.minBet,
                       maximum_bet: values.maxBet,
