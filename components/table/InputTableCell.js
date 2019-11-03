@@ -31,6 +31,8 @@ function InputTableCell({ data, value, type }) {
                 type={type}
                 placeholder={value}
               />
+              <button type="submit">Submit</button>
+              <button>Cancel</button>
             </Form>
           :
             <p>{value}</p>

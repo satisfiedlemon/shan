@@ -59,6 +59,7 @@ function SelectTableCell({ data, value, options }) {
               </MySelect>
 
               <button type="submit">Submit</button>
+              <button>Cancel</button>
             </Form>
           :
             <p>{value}</p>
