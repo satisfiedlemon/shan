@@ -15,13 +15,13 @@ function Games({}) {
 
   useEffect(() => {
     axios.get(`${server}/game`).then(data => {
-      setGames(data.data);
+      setGames(data.data.data);
     }).catch(err => console.log(err));
   }, []);
 
   useEffect(() => {
     axios.get(`${server}/game`).then(data => {
-      setGames(data.data);
+      setGames(data.data.data);
     }).catch(err => console.log(err));
   }, [games]);
 

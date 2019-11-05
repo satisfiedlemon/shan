@@ -15,13 +15,13 @@ function Payments({}) {
 
   useEffect(() => {
     axios.get(`${server}/payment`).then(data => {
-      setPayments(data.data);
+      setPayments(data.data.data);
     }).catch(err => console.log(err));
   }, []);
 
   useEffect(() => {
     axios.get(`${server}/payment`).then(data => {
-      setPayments(data.data);
+      setPayments(data.data.data);
     }).catch(err => console.log(err));
   }, [payments]);
 
