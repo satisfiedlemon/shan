@@ -7,14 +7,67 @@ function UserGames({ setter }) {
   const server = config.server.url;
   const [ userGames, setUserGames ] = useState([]);
   let [ userId, setUserId ] = useState();
+  const [pager, setPager] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
 
   const search = (e) => {
     e.preventDefault();
 
     axios.get(`${server}/user/${userId}/games`).then(data => {
+      console.log(data)
       setUserGames(data.data);
-      setter(data.data);
+      // setter(data.data);
     }).catch(err => console.log(err));
+  }
+
+  const nextPage = async () => {
+    if (pager != totalPage) {
+      setPager(pager++);
+
+      await axios
+        .get(`${server}/user?page=${pager}`)
+        .then(data => {
+          setUsers(data.data);
+          setPager(data.data.page);
+        })
+        .catch(err => console.log(err));
+    }
+  }
+
+  const prevPage = async () => {
+    if (pager > 1) {
+      setPager(pager--);
+    
+      await axios
+        .get(`${server}/user?page=${pager}`)
+        .then(data => {
+          setPager(data.data.page);
+          setUsers(data.data);
+        })
+        .catch(err => console.log(err));
+    }
+  }
+
+  const goToPage = async (page) => {
+    setPager(page);
+
+    await axios
+        .get(`${server}/user?page=${page}`)
+        .then(data => {
+          setPager(data.data.page);
+          setUsers(data.data);
+        })
+        .catch(err => console.log(err));
+  }
+
+  const paginate = () => {
+    let ar = [];
+
+    for (let i = 1; i <= totalPage; i++) {
+      ar.push(<p key={i} onClick={() => goToPage(i)}>{i}</p>);
+    }
+
+    return ar;
   }
 
   return (
@@ -54,6 +107,18 @@ function UserGames({ setter }) {
           })}
         </tbody>
       </table>
+
+      <ul>
+        <li>
+          <p onClick={() => prevPage()}>Previous</p>
+        </li>
+        <li>
+          { paginate() }
+        </li>
+        <li>
+          <p onClick={() => nextPage()}>Next</p>
+        </li>
+      </ul>
     </div>
   )
 }

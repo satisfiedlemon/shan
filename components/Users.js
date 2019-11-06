@@ -16,15 +16,22 @@ function Users({}) {
   const [totalPage, setTotalPage] = useState(1);
 
   useEffect(() => {
+    const abortController = new AbortController();
+    const signal = abortController.signal;
+
     axios
-      .get(`${server}/user`)
+      .get(`${server}/user`, {signal: signal})
       .then(data => {
-        console.log(data.data)
+        // console.log(data.data)
         setUsers(data.data);
         setPager(data.data.page);
         setTotalPage(data.data.lastPage);
       })
       .catch(err => console.log(err));
+
+      return function cleanup() {
+        abortController.abort();
+      }
   }, []);
 
   // useEffect(() => {
@@ -81,7 +88,7 @@ function Users({}) {
     let ar = [];
 
     for (let i = 1; i <= totalPage; i++) {
-      ar.push(<p onClick={() => goToPage(i)}>{i}</p>);
+      ar.push(<p key={i} onClick={() => goToPage(i)}>{i}</p>);
     }
 
     return ar;
