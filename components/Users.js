@@ -13,6 +13,7 @@ function Users({}) {
   const server = config.server.url;
   const [users, setUsers] = useState([]);
   const [pager, setPager] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
 
   useEffect(() => {
     axios
@@ -21,6 +22,7 @@ function Users({}) {
         console.log(data.data)
         setUsers(data.data);
         setPager(data.data.page);
+        setTotalPage(data.data.lastPage);
       })
       .catch(err => console.log(err));
   }, []);
@@ -36,20 +38,53 @@ function Users({}) {
 
 
   const nextPage = async () => {
-    setPager(++pager);
-    let ar = [];
+    if (pager != totalPage) {
+      setPager(pager++);
+
+      await axios
+        .get(`${server}/user?page=${pager}`)
+        .then(data => {
+          setUsers(data.data);
+          setPager(data.data.page);
+        })
+        .catch(err => console.log(err));
+    }
+  }
+
+  const prevPage = async () => {
+    if (pager > 1) {
+      setPager(pager--);
+    
+      await axios
+        .get(`${server}/user?page=${pager}`)
+        .then(data => {
+          setPager(data.data.page);
+          setUsers(data.data);
+        })
+        .catch(err => console.log(err));
+    }
+  }
+
+  const goToPage = async (page) => {
+    setPager(page);
 
     await axios
-      .get(`${server}/user?page=${pager+1}`)
-      .then(data => {
-        console.log(data.data.page, data.data.data)
-        setUsers(data.data);
-        // setPager(data.data.page);
-        ar.push(data.data)
-      })
-      .catch(err => console.log(err));
+        .get(`${server}/user?page=${page}`)
+        .then(data => {
+          setPager(data.data.page);
+          setUsers(data.data);
+        })
+        .catch(err => console.log(err));
+  }
 
-      // setUsers(ar);
+  const paginate = () => {
+    let ar = [];
+
+    for (let i = 1; i <= totalPage; i++) {
+      ar.push(<p onClick={() => goToPage(i)}>{i}</p>);
+    }
+
+    return ar;
   }
 
   return (
@@ -190,7 +225,7 @@ function Users({}) {
             })
           ) : (
             <tr>
-              No users
+              <td colSpan="100%">No users</td>
             </tr>
           )}
         </tbody>
@@ -198,15 +233,13 @@ function Users({}) {
 
       <ul>
         <li>
-          <p onClick={() => nextPage()}>Next</p>
+          <p onClick={() => prevPage()}>Previous</p>
         </li>
-        
-          <li>
-            <a href={`users?page=${users.page}`}>{ users.page }</a>
-          </li>
-
         <li>
-          <a href={ users.lastPage == users.page ? '#' : 'users?page=' + (users.page + 1) }>Next</a>
+          { paginate() }
+        </li>
+        <li>
+          <p onClick={() => nextPage()}>Next</p>
         </li>
       </ul>
 
