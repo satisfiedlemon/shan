@@ -750,3 +750,17 @@ tr:hover {
 	}
 
 }
+
+.pagination {
+  display: flex;
+}
+
+.pagination li p {
+  color: dodgerblue;
+  cursor: pointer;
+  display: inline-flex;
+  padding: 0 10px;
+}
+.pagination li p:hover {
+  text-decoration: underline;
+}

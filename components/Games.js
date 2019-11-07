@@ -7,6 +7,7 @@ import config from '../config';
 import GameUsers from './search/GameUsers';
 import NewGame from './create/NewGame';
 import InputTableCell from './table/InputTableCell';
+import Pagination from './table/Pagination';
 
 function Games({}) {
 
@@ -38,56 +39,6 @@ function Games({}) {
   //     setGames(data.data.data);
   //   }).catch(err => console.log(err));
   // }, [games]);
-
-  const nextPage = async () => {
-    if (pager != totalPage) {
-      setPager(pager++);
-
-      await axios
-        .get(`${server}/game?page=${pager}`)
-        .then(data => {
-          setGames(data.data);
-          setPager(data.data.page);
-        })
-        .catch(err => console.log(err));
-    }
-  }
-
-  const prevPage = async () => {
-    if (pager > 1) {
-      setPager(pager--);
-    
-      await axios
-        .get(`${server}/game?page=${pager}`)
-        .then(data => {
-          setPager(data.data.page);
-          setGames(data.data);
-        })
-        .catch(err => console.log(err));
-    }
-  }
-
-  const goToPage = async (page) => {
-    setPager(page);
-
-    await axios
-        .get(`${server}/game?page=${page}`)
-        .then(data => {
-          setPager(data.data.page);
-          setGames(data.data);
-        })
-        .catch(err => console.log(err));
-  }
-
-  const paginate = () => {
-    let ar = [];
-
-    for (let i = 1; i <= totalPage; i++) {
-      ar.push(<p key={i} onClick={() => goToPage(i)}>{i}</p>);
-    }
-
-    return ar;
-  }
 
   return (
     <div className="main-content">
@@ -171,17 +122,7 @@ function Games({}) {
         </tbody>
       </table>
 
-      <ul>
-        <li>
-          <p onClick={() => prevPage()}>Previous</p>
-        </li>
-        <li>
-          { paginate() }
-        </li>
-        <li>
-          <p onClick={() => nextPage()}>Next</p>
-        </li>
-      </ul>
+      <Pagination pageData="game" newPageData={setGames} pageNumber={setPager} totalPages={totalPage} currentPage={pager}  />
 
       <GameUsers />
 

@@ -7,6 +7,7 @@ import config from '../config';
 import UserPayments from './search/UserPayments';
 import NewPayment from './create/NewPayment';
 import InputTableCell from './table/InputTableCell';
+import Pagination from './table/Pagination';
 
 function Payments({}) {
 
@@ -16,20 +17,13 @@ function Payments({}) {
   const [totalPage, setTotalPage] = useState(1);
 
   useEffect(() => {
-    const abortController = new AbortController();
-    const signal = abortController.signal;
-
     axios
-      .get(`${server}/payment`, { signal: signal })
+      .get(`${server}/payment`)
       .then(data => {
         setPayments(data.data);
         setTotalPage(data.data.lastPage);
         setPager(data.data.page);
       }).catch(err => console.log(err));
-
-      return function cleanup() {
-        abortController.abort();
-      }
   }, []);
 
   // useEffect(() => {
@@ -37,56 +31,6 @@ function Payments({}) {
   //     setPayments(data.data.data);
   //   }).catch(err => console.log(err));
   // }, [payments]);
-
-  const nextPage = async () => {
-    if (pager != totalPage) {
-      setPager(pager++);
-
-      await axios
-        .get(`${server}/payment?page=${pager}`)
-        .then(data => {
-          setPayments(data.data);
-          setPager(data.data.page);
-        })
-        .catch(err => console.log(err));
-    }
-  }
-
-  const prevPage = async () => {
-    if (pager > 1) {
-      setPager(pager--);
-    
-      await axios
-        .get(`${server}/payment?page=${pager}`)
-        .then(data => {
-          setPager(data.data.page);
-          setPayments(data.data);
-        })
-        .catch(err => console.log(err));
-    }
-  }
-
-  const goToPage = async (page) => {
-    setPager(page);
-
-    await axios
-        .get(`${server}/payment?page=${page}`)
-        .then(data => {
-          setPager(data.data.page);
-          setPayments(data.data);
-        })
-        .catch(err => console.log(err));
-  }
-
-  const paginate = () => {
-    let ar = [];
-
-    for (let i = 1; i <= totalPage; i++) {
-      ar.push(<p key={i} onClick={() => goToPage(i)}>{i}</p>);
-    }
-
-    return ar;
-  }
 
   return (
     <div className="main-content">
@@ -171,17 +115,7 @@ function Payments({}) {
         </tbody>
       </table>
 
-      <ul>
-        <li>
-          <p onClick={() => prevPage()}>Previous</p>
-        </li>
-        <li>
-          { paginate() }
-        </li>
-        <li>
-          <p onClick={() => nextPage()}>Next</p>
-        </li>
-      </ul>
+      <Pagination pageData="payment" newPageData={setPayments} pageNumber={setPager} totalPages={totalPage} currentPage={pager}  />
 
       <UserPayments />
 
