@@ -2,18 +2,23 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import config from '../../config';
 
-function GameUsers({ setter }) {
+import Pagination from '../table/Pagination';
+
+function GameUsers({ }) {
 
   const server = config.server.url;
   const [ gameUsers, setGameUsers ] = useState([]);
   let [ gameId, setGameId ] = useState();
+  const [pager, setPager] = useState(1);
+  const [totalPage, setTotalPage] = useState(1);
 
   const search = (e) => {
     e.preventDefault();
 
     axios.get(`${server}/game/${gameId}/users`).then(data => {
       setGameUsers(data.data);
-      setter(data.data);
+      setPager(data.data.page);
+      setTotalPage(data.data.lastPage);
     }).catch(err => console.log(err));
   }
 
@@ -43,25 +48,33 @@ function GameUsers({ setter }) {
           </tr>
         </thead>
         <tbody>
-          {gameUsers.map((user, index) => {
-            return (
-              <tr key={index}>
-                <td data-col="ID">{user.id}</td>
-                <td data-col="User Name">{user.user_name}</td>
-                <td data-col="Full Name">{user.full_name}</td>
-                <td data-col="Balance">{user.balance}</td>
-                <td data-col="Total Deposit">{user.total_deposit}</td>
-                <td data-col="Status">{user.status}</td>
-                <td data-col="User Type">{user.user_type}</td>
-                <td data-col="Phone">{user.phone}</td>
-                <td data-col="Last Login">{user.last_login}</td>
-                <td data-col="Updated At">{user.updated_at}</td>
-                <td data-col="Created At">{user.created_at}</td>
-              </tr>
-            );
-          })}
+          {gameUsers.data ? (
+            gameUsers.data.map((user, index) => {
+              return (
+                <tr key={index}>
+                  <td data-col="ID">{user.id}</td>
+                  <td data-col="User Name">{user.user_name}</td>
+                  <td data-col="Full Name">{user.full_name}</td>
+                  <td data-col="Balance">{user.balance}</td>
+                  <td data-col="Total Deposit">{user.total_deposit}</td>
+                  <td data-col="Status">{user.status}</td>
+                  <td data-col="User Type">{user.user_type}</td>
+                  <td data-col="Phone">{user.phone}</td>
+                  <td data-col="Last Login">{user.last_login}</td>
+                  <td data-col="Updated At">{user.updated_at}</td>
+                  <td data-col="Created At">{user.created_at}</td>
+                </tr>
+              );
+            })
+          ) : (
+            <tr>
+              <td colSpan="100%">No users</td>
+            </tr>
+          )}
         </tbody>
       </table>
+
+      <Pagination pageData="game" searchData="users" id={gameId} newPageData={setGameUsers} pageNumber={setPager} totalPages={totalPage} currentPage={pager}  />
     </div>
   )
 }
