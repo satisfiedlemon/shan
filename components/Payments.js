@@ -87,23 +87,25 @@ function Payments({}) {
                     }
                   }}
                 >
-                  <tr>
-                    <td data-col="ID">{p.id}</td>
-                    <td data-col="User ID">
-                      <InputTableCell data="userId" type="number" value={p.user_id} />
-                    </td>
-                    <td data-col="Amount Paid">
-                      <InputTableCell data="amountPaid" type="number" value={p.amount_paid} />
-                    </td>
-                    <td data-col="Coins">
-                      <InputTableCell data="coins" type="number" value={p.coins} />
-                    </td>
-                    <td data-col="Bonus">
-                      <InputTableCell data="bonus" type="number" value={p.bonus} />
-                    </td>
-                    <td data-col="Created At">{p.created_at}</td>
-                    <td data-col="Updated At">{p.updated_at}</td>
-                  </tr>
+                  {props => (
+                    <tr>
+                      <td data-col="ID">{p.id}</td>
+                      <td data-col="User ID">
+                        <InputTableCell data="userId" type="number" value={p.user_id} submit={props} />
+                      </td>
+                      <td data-col="Amount Paid">
+                        <InputTableCell data="amountPaid" type="number" value={p.amount_paid} submit={props} />
+                      </td>
+                      <td data-col="Coins">
+                        <InputTableCell data="coins" type="number" value={p.coins} submit={props} />
+                      </td>
+                      <td data-col="Bonus">
+                        <InputTableCell data="bonus" type="number" value={p.bonus} submit={props} />
+                      </td>
+                      <td data-col="Created At">{p.created_at}</td>
+                      <td data-col="Updated At">{p.updated_at}</td>
+                    </tr>
+                  )}
                 </Formik>
               );
             })

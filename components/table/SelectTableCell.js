@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Form, useField } from 'formik';
 import styled from "@emotion/styled";
 
-function SelectTableCell({ data, value, options, props }) {
+function SelectTableCell({ data, value, options, submit }) {
 
   const [ toggle, setToggle ] = useState(false);
 
@@ -44,7 +44,7 @@ function SelectTableCell({ data, value, options, props }) {
       {
         toggle
           ?
-            <form onSubmit={props.handleSubmit}>
+            <form onSubmit={submit.handleSubmit}>
               <MySelect name={data}>
                 <option value="">Select</option>
                 {
