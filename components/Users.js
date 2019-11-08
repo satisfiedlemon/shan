@@ -95,10 +95,7 @@ function Users({}) {
                   //     .max(20, "Too long")
                   //     .required("Required")
                   // })}
-                  onSubmit={(values, { setSubmitting }) => {
-
-                    console.log('3')
-
+                  onSubmit={(values, actions) => {
                     try {
                       axios.put(`${server}/user/${user.id}`, {
                         user_name: values.userName,
@@ -114,78 +111,76 @@ function Users({}) {
                       console.log(err);
                     }
 
-                    // setTimeout(() => {
-                    //   alert("saved")
-                    // }, 400);
+                    setTimeout(() => {
+                      // alert("saved")
+                      actions.setSubmitting(false);
+                    }, 1000);
                   }}
                 >
-                  {
-                    props => (
-                      <tr>
-                        <td data-col="ID">{user.id}</td>
-                        <td data-col="User Name">
-                          <InputTableCell
-                            data="userName"
-                            value={user.user_name}
-                            type="text"
-                            props={props}
-                          />
-                        </td>
-                        <td data-col="Full Name">
-                          <InputTableCell
-                            data="fullName"
-                            value={user.full_name}
-                            type="text"
-                            props={props}
-                          />
-                        </td>
-                        <td data-col="Balance">
-                          <InputTableCell
-                            data="balance"
-                            value={user.balance}
-                            type="number"
-                            props={props}
-                          />
-                        </td>
-                        <td data-col="Total Deposit">
-                          <InputTableCell
-                            data="totalDeposit"
-                            value={user.total_deposit}
-                            type="number"
-                            props={props}
-                          />
-                        </td>
-                        <td data-col="Status">
-                          <SelectTableCell
-                            data="status"
-                            value={user.status}
-                            options={["active", "inactive"]}
-                            props={props}
-                          />
-                        </td>
-                        <td data-col="User Type">
-                          <SelectTableCell
-                            data="userType"
-                            value={user.user_type}
-                            options={["player", "admin"]}
-                            props={props}
-                          />
-                        </td>
-                        <td data-col="Phone">
-                          <InputTableCell
-                            data="phone"
-                            value={user.phone}
-                            type="text"
-                            props={props}
-                          />
-                        </td>
-                        <td data-col="Last Login">{user.last_login}</td>
-                        <td data-col="Updated At">{user.updated_at}</td>
-                        <td data-col="Created At">{user.created_at}</td>
-                      </tr>
-                    )
-                  }
-                  
+                  {props => (
+                    <tr>
+                      <td data-col="ID">{user.id}</td>
+                      <td data-col="User Name">
+                        <InputTableCell
+                          data="userName"
+                          value={user.user_name}
+                          type="text"
+                          submit={props}
+                        />
+                      </td>
+                      <td data-col="Full Name">
+                        <InputTableCell
+                          data="fullName"
+                          value={user.full_name}
+                          type="text"
+                          submit={props}
+                        />
+                      </td>
+                      <td data-col="Balance">
+                        <InputTableCell
+                          data="balance"
+                          value={user.balance}
+                          type="number"
+                          submit={props}
+                        />
+                      </td>
+                      <td data-col="Total Deposit">
+                        <InputTableCell
+                          data="totalDeposit"
+                          value={user.total_deposit}
+                          type="number"
+                          submit={props}
+                        />
+                      </td>
+                      <td data-col="Status">
+                        <SelectTableCell
+                          data="status"
+                          value={user.status}
+                          options={["active", "inactive"]}
+                          submit={props}
+                        />
+                      </td>
+                      <td data-col="User Type">
+                        <SelectTableCell
+                          data="userType"
+                          value={user.user_type}
+                          options={["player", "admin"]}
+                          submit={props}
+                        />
+                      </td>
+                      <td data-col="Phone">
+                        <InputTableCell
+                          data="phone"
+                          value={user.phone}
+                          type="text"
+                          submit={props}
+                        />
+                      </td>
+                      <td data-col="Last Login">{user.last_login}</td>
+                      <td data-col="Updated At">{user.updated_at}</td>
+                      <td data-col="Created At">{user.created_at}</td>
+                    </tr>
+                  )}
                 </Formik>
               );
             })

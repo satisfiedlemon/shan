@@ -61,19 +61,19 @@ function Games({}) {
                     maxBet: game.maximum_bet,
                     fee: game.fee
                   }}
-                  validationSchema={Yup.object({
-                    name: Yup.string()
-                      .min(3, "Must be 3 characters or less")
-                      .max(50, "Too long")
-                      .required("Required"),
-                    minBet: Yup.number()
-                      .required("Required"),
-                    maxBet: Yup.number()  
-                      .required("Required"),
-                    fee: Yup.number()  
-                      .required("Required"),
-                  })}
-                  onSubmit={(values, { setSubmitting }) => {
+                  // validationSchema={Yup.object({
+                  //   name: Yup.string()
+                  //     .min(3, "Must be 3 characters or less")
+                  //     .max(50, "Too long")
+                  //     .required("Required"),
+                  //   minBet: Yup.number()
+                  //     .required("Required"),
+                  //   maxBet: Yup.number()  
+                  //     .required("Required"),
+                  //   fee: Yup.number()  
+                  //     .required("Required"),
+                  // })}
+                  onSubmit={(values, actions) => {
                     try {
                       axios.put(`${server}/game/${game.id}`, {
                         name: values.name,
@@ -85,25 +85,32 @@ function Games({}) {
                     } catch (err) {
                       console.log(err)
                     }
+
+                    setTimeout(() => {
+                      // alert("saved")
+                      actions.setSubmitting(false);
+                    }, 1000);
                   }}
                 >
-                  <tr>
-                    <td data-col="ID">{game.id}</td>
-                    <td data-col="Name">
-                      <InputTableCell data="name" type="text" value={game.name} />
-                    </td>
-                    <td data-col="Min Bet">
-                      <InputTableCell data="minBet" type="number" value={game.minimum_bet} />
-                    </td>
-                    <td data-col="Max Bet">
-                      <InputTableCell data="maxBet" type="number" value={game.maximum_bet} />
-                    </td>
-                    <td data-col="Fee">
-                      <InputTableCell data="fee" type="number" value={game.fee} />
-                    </td>
-                    <td data-col="Created At">{game.created_at}</td>
-                    <td data-col="Updated At">{game.updated_at}</td>
-                  </tr>
+                  {props => (
+                    <tr>
+                      <td data-col="ID">{game.id}</td>
+                      <td data-col="Name">
+                        <InputTableCell data="name" type="text" value={game.name} submit={props} />
+                      </td>
+                      <td data-col="Min Bet">
+                        <InputTableCell data="minBet" type="number" value={game.minimum_bet} submit={props} />
+                      </td>
+                      <td data-col="Max Bet">
+                        <InputTableCell data="maxBet" type="number" value={game.maximum_bet} submit={props} />
+                      </td>
+                      <td data-col="Fee">
+                        <InputTableCell data="fee" type="number" value={game.fee} submit={props} />
+                      </td>
+                      <td data-col="Created At">{game.created_at}</td>
+                      <td data-col="Updated At">{game.updated_at}</td>
+                    </tr>
+                  )}
                 </Formik>
               );
             })
