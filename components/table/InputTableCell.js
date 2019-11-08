@@ -2,10 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Form, useField } from 'formik';
 import styled from "@emotion/styled";
 
-function InputTableCell({ data, value, type, submit }) {
-
-
-  console.log(submit)
+function InputTableCell({ data, value, type }) {
 
   const [ toggle, setToggle ] = useState(false);
 
