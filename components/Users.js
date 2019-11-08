@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Formik } from "formik";
+import { Formik, useFormik } from "formik";
 import * as Yup from "yup";
 import config from "../config";
 
@@ -65,7 +65,9 @@ function Users({}) {
         </thead>
         <tbody>
           {users.data ? (
+
             users.data.map((user, index) => {
+
               return (
                 <Formik
                   key={index}
@@ -101,6 +103,9 @@ function Users({}) {
                       .required("Required")
                   })}
                   onSubmit={(values, { setSubmitting }) => {
+
+                    console.log('3')
+
                     try {
                       axios.put(`${server}/user/${user.id}`, {
                         user_name: values.userName,

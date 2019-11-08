@@ -2,7 +2,10 @@ import React, { useEffect, useState } from 'react';
 import { Form, useField } from 'formik';
 import styled from "@emotion/styled";
 
-function InputTableCell({ data, value, type }) {
+function InputTableCell({ data, value, type, submit }) {
+
+
+  console.log(submit)
 
   const [ toggle, setToggle ] = useState(false);
 
@@ -21,19 +24,22 @@ function InputTableCell({ data, value, type }) {
   };
 
   return (
-    <div onClick={() => setToggle(true)}>
+    <div onClick={() => {setToggle(true)}}>
       {
         toggle
           ?
-            <Form>
-              <MyTextInput
-                name={data}
-                type={type}
-                placeholder={value}
-              />
-              <button type="submit">Submit</button>
-              <button type="reset" onClick={() => {console.log("asd"); setToggle(false)}}>Cancel</button>
-            </Form>
+            <div className="test">
+              <Form
+              >
+                <MyTextInput
+                  name={data}
+                  type={type}
+                  placeholder={value}
+                />
+                <button type="submit">Submit</button>
+                <button type="reset" onClick={(e) => {e.stopPropagation(); setToggle(false)}}>Cancel</button>
+              </Form>
+            </div>
           :
             <p>{value}</p>
       }
