@@ -17,9 +17,6 @@ function Games({}) {
   const [totalPage, setTotalPage] = useState(1);
 
   useEffect(() => {
-    const abortController = new AbortController();
-    const signal = abortController.signal;
-
     axios
       .get(`${server}/game`, { signal: signal })
       .then(data => {
@@ -28,10 +25,6 @@ function Games({}) {
         setPager(data.data.page);
         setTotalPage(data.data.lastPage);
       }).catch(err => console.log(err));
-
-      return function cleanup() {
-        abortController.abort();
-      }
   }, []);
 
   // useEffect(() => {

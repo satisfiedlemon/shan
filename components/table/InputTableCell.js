@@ -28,18 +28,15 @@ function InputTableCell({ data, value, type, submit }) {
       {
         toggle
           ?
-            <div className="test">
-              <Form
-              >
-                <MyTextInput
-                  name={data}
-                  type={type}
-                  placeholder={value}
-                />
-                <button type="submit">Submit</button>
-                <button type="reset" onClick={(e) => {e.stopPropagation(); setToggle(false)}}>Cancel</button>
-              </Form>
-            </div>
+            <Form>
+              <MyTextInput
+                name={data}
+                type={type}
+                placeholder={value}
+              />
+              <button type="submit">Submit</button>
+              <button type="reset" onClick={(e) => {e.stopPropagation(); setToggle(false)}}>Cancel</button>
+            </Form>
           :
             <p>{value}</p>
       }
