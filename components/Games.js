@@ -18,7 +18,7 @@ function Games({}) {
 
   useEffect(() => {
     axios
-      .get(`${server}/game`, { signal: signal })
+      .get(`${server}/game`)
       .then(data => {
         console.log(data.data)
         setGames(data.data);
