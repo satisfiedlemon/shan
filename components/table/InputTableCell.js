@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { Form, useField } from 'formik';
 import styled from "@emotion/styled";
 
-function InputTableCell({ data, value, type }) {
+function InputTableCell({ data, value, type, props }) {
 
   const [ toggle, setToggle ] = useState(false);
 
@@ -25,7 +25,7 @@ function InputTableCell({ data, value, type }) {
       {
         toggle
           ?
-            <Form>
+            <form onSubmit={props.handleSubmit}>
               <MyTextInput
                 name={data}
                 type={type}
@@ -33,7 +33,7 @@ function InputTableCell({ data, value, type }) {
               />
               <button type="submit">Submit</button>
               <button type="reset" onClick={(e) => {e.stopPropagation(); setToggle(false)}}>Cancel</button>
-            </Form>
+            </form>
           :
             <p>{value}</p>
       }
